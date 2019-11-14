@@ -4,12 +4,18 @@ import Entities.Vegetable;
 import com.epam.ta.parking.util.NullCheckUtil;
 import com.epam.ta.salad.Repository.SQLRepository.VegetableRepositoryImpl;
 import com.epam.ta.salad.Repository.Service.VegetableService;
+import static com.epam.ta.salad.Repository.util.VegetableFieldsValidator.*;
 import exceptions.NullVegetableException;
+
 
 import java.sql.SQLException;
 import java.util.List;
 
+
+
 public class VegetableServiceImpl implements VegetableService {
+
+
 
     private final VegetableRepositoryImpl vegetableRepositoryImpl;
 
@@ -22,7 +28,8 @@ public class VegetableServiceImpl implements VegetableService {
         Vegetable addVegetable = null;
         if (null != vegetable) {
             if (!NullCheckUtil.notNullCheck(vegetable.getName()) & (!NullCheckUtil.notNullCheck(vegetable.getId(),
-                    (int) vegetable.getWeight(), (int) vegetable.getCalories()))) {
+                    (int) vegetable.getWeight(), (int) vegetable.getCalories()) & validateId(vegetable.getId()) &
+                    validateWeight(vegetable.getWeight()) & validateCalories(vegetable.getCalories()) & validateNames(vegetable.getName()))) {
                 throw new NullVegetableException("Vegetable contains null data");
             }
 
@@ -44,7 +51,8 @@ public class VegetableServiceImpl implements VegetableService {
 
         if (null != vegetable) {
             if (!NullCheckUtil.notNullCheck(vegetable.getName()) & (!NullCheckUtil.notNullCheck(vegetable.getId(),
-                    (int) vegetable.getWeight(), (int) vegetable.getCalories()))) {
+                    (int) vegetable.getWeight(), (int) vegetable.getCalories())) & validateId(vegetable.getId()) &
+            validateWeight(vegetable.getWeight()) & validateCalories(vegetable.getCalories()) & validateNames(vegetable.getName()))  {
                 throw new NullVegetableException("Vegetable contains null data");
             }
             try {
@@ -52,7 +60,7 @@ public class VegetableServiceImpl implements VegetableService {
 
 
             } catch (SQLException e) {
-                System.out.println("Unable to add a vegetable");
+                System.out.println("Unable to update a vegetable");
             }
         }
         return editedVegetable;
@@ -78,5 +86,6 @@ public class VegetableServiceImpl implements VegetableService {
     public Vegetable getVegetablesFromFilter(List<Vegetable> vegetableList) {
         return null;
     }
+
 
 }
